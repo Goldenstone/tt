@@ -1,0 +1,19 @@
+{
+  "name": "TT",
+  "version": "0.0.1",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "firebase": "~2.0.3",
+    "angularfire": "~0.8.2",
+    "ionic": "~0.9.27",
+    "firebase-simple-login": "~1.6.4"
+  }
+}
