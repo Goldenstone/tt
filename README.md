@@ -4,18 +4,32 @@ TT
 
 ## Install
 + 把该文件clone到本地 
-    `git clone https://github.com/Goldenstone/tt.gitq`
+```bash
+git clone https://github.com/Goldenstone/tt.git
+```
 + 该应用是由gulp搭建的结构，所以需要在全局安装gulp 
-    `npm install -g gulp`
+```bash
+npm install -g gulp
+```
 + 进行`bower install`和`npm install` 
-    `gulp make` 
+```bash
+gulp make
+```
 + 运行程序 
-    `gulp run`
+```bash
+gulp run
+```
 
 ## Build
 + 生成mac版本 
-    `gulp build-osx`
+```bash 
+gulp build-osx
+```
 + 生成windows版本 
-    `gulp build-win`
+```bash
+gulp build-win
+```
 + 生成linux版本 
-    `gulp build-linux`
+```bash
+gulp build-linux
+```
