@@ -142,7 +142,7 @@ ttApp.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function($rootS
     var d = new Date();
     d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
     sync.$push({
-      content: '<p>' + $scope.loggedInUser + ' says : <br/>' + chatMsg + '</p> <hr/>',
+      content: '<p>' + $scope.loggedInUser + ' ' + d + '<br/>' + chatMsg + '</p> <hr/>',
       time: d
     });
 
