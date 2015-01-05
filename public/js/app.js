@@ -2,7 +2,7 @@ ttApp = angular.module('tt', ['ionic', 'firebase'])
 
 .run(function($rootScope, $firebaseSimpleLogin, $window, $ionicLoading) {
 
-  $rootScope.baseUrl = 'https://tt.firebaseio.com/';
+  $rootScope.baseUrl = 'https://talktalk.firebaseio.com/';
   var authRef = new Firebase($rootScope.baseUrl);
   $rootScope.auth = $firebaseSimpleLogin(authRef);
 
