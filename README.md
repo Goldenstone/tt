@@ -13,7 +13,7 @@ npm install -g gulp
 ```
 + 进行`bower install`和`npm install` 
 ```bash
-gulp make
+bower install && npm install
 ```
 + 运行程序 
 ```bash
