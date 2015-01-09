@@ -45,6 +45,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     var email = this.signup.email;
     var password = this.signup.password;
     var username = this.signup.username;
+    var gender = this.signup.gender;
 
     $rootScope.show('正在为您验证...');
 
@@ -54,7 +55,8 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
         var profileRef = new Firebase($rootScope.baseUrl).child('profiles').child(user.id);
         $rootScope.profile = $firebase(profileRef);
         $rootScope.profile.$set({
-          name: username
+          name: username,
+          gender: gender
         });
         $rootScope.userId = user.id;
         $state.go("home");
@@ -84,6 +86,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     $rootScope.userName = user.name;
     olUserSync.$push({
       user: user.name,
+      gender: user.gender,
       login: Date.now()
     }).then(function (data) {
       $rootScope.presenceID = data.key();

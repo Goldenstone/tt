@@ -9,6 +9,11 @@
           <span class="input-label">用户名</span>
           <input type="text" placeholder="请输入用户名" ng-model="signup.username">
         </label>
+        <label class="item gender">
+          <span class="input-label gender-label">性别</span>
+            <input class="gender" type="radio" ng-model="signup.gender" value="male" />  男
+            <input type="radio" ng-model="signup.gender" value="female" />  女
+        </label>
         <label class="item item-input">
           <span class="input-label">邮箱</span>
           <input type="email" placeholder="请输入邮箱" ng-model="signup.email">
@@ -18,7 +23,7 @@
           <input type="password" placeholder="请输入密码" ng-model="signup.password">
         </label>
       </ion-list>
-      <button class="button button-dark button-block" ng-disabled="!(signup.username && signup.email && signup.password)" ng-click="signupUser()">注册</button>
+      <button class="button button-dark button-block" ng-disabled="!(signup.username && signup.email && signup.password && signup.gender)" ng-click="signupUser()">注册</button>
       <a href="#/" class="button button-positive button-clear button-block">返回</a>
     </form>
   </ion-content>

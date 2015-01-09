@@ -12,3 +12,12 @@ hr,.clear {
 .borderUp {
   border-top: 1px solid black;
 }
+
+.gender {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.gender-label {
+  padding-right: 90px;
+}

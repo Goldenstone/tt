@@ -54,8 +54,6 @@ ttApp = angular.module('tt', ['ionic', 'firebase'])
     });
   }
 
-  // $rootScope.checkSession();
-
   // globals
   $rootScope.chatToUser = [];
   $rootScope.userName = '';
