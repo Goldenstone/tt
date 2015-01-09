@@ -9,10 +9,11 @@
     </h4>
     <hr/>
     <div class="list" ng-controller="HomeCtrl">
+      <span class="pull-left" ng-click="randomChat()">找人聊天</h4>
       <label class="item item-input" ng-hide="users.length == 1">
         <input type="text" placeholder="Search Users" ng-model="search.user">
       </label>
-      <span class="item item-button-right" ng-repeat="u in users | filter:search:user" ng-if="u.user != userName">
+      <span class="item item-button-right" ng-repeat="u in users | filter:search:user" >
         <i class="icon ion-ionic"></i>&nbsp;&nbsp;&nbsp; {{u.user}}
         <button class="button button-dark" ng-click="triggerChat(u)">
           <i class="icon ion-chatbubbles"></i>

@@ -96,6 +96,13 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     spawnner(chatToUser.user);
   }
 
+  $scope.randomChat = function () {
+    var random = Math.floor(Math.random() * $scope.users.length);
+    var chatToUser = $scope.users[random];
+    $rootScope.chatToUser.push(chatToUser);
+    spawnner(chatToUser.user);
+  }
+
   function spawnner(user) { // other user
     var x = gui.Window.open('chat/' + user + '/' + $rootScope.userName, {
       width: 300,
@@ -136,7 +143,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
       if (snap.key.indexOf($rootScope.escapeUserName($rootScope.userName)) >= 0) {
         // check and spawn
         var otherUser = snap.key.replace(/_/g, '').replace('chat', '').replace($rootScope.escapeUserName($rootScope.userName), '');
-        if ($rootScope.openchats.join('').indexOf($rootScope.escapeEmailAddress(otherUser)) < 0) {
+        if ($rootScope.openchats.join('').indexOf($rootScope.escapeUserName(otherUser)) < 0) {
           spawnner(otherUser);
         }
       }
