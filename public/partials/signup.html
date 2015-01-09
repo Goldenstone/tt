@@ -1,22 +1,25 @@
-<ion-view title="Signup">
+<ion-view title="TT">
+  <div class="bar bar-header bar-dark">
+    <h1 class="title">注册</h1>
+  </div>
   <ion-content padding="true" scroll="false" class="has-header">
     <form ng-controller="SignupCtrl">
       <ion-list>
         <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" placeholder="Username" ng-model="signup.username">
+          <span class="input-label">用户名</span>
+          <input type="text" placeholder="请输入用户名" ng-model="signup.username">
         </label>
         <label class="item item-input">
-          <span class="input-label">Email</span>
-          <input type="email" placeholder="Email Address" ng-model="signup.email">
+          <span class="input-label">邮箱</span>
+          <input type="email" placeholder="请输入邮箱" ng-model="signup.email">
         </label>
         <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" placeholder="Password" ng-model="signup.password">
+          <span class="input-label">密码</span>
+          <input type="password" placeholder="请输入密码" ng-model="signup.password">
         </label>
       </ion-list>
-      <button class="button button-dark button-block" ng-disabled="!(signup.username && signup.email && signup.password)" ng-click="signupUser()">Sign up</button>
-      <a href="#/" class="button button-positive button-clear button-block">Or Login</a>
+      <button class="button button-dark button-block" ng-disabled="!(signup.username && signup.email && signup.password)" ng-click="signupUser()">注册</button>
+      <a href="#/" class="button button-positive button-clear button-block">返回</a>
     </form>
   </ion-content>
 </ion-view>

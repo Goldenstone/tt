@@ -8,3 +8,7 @@ hr,.clear {
   padding: 0px;
   margin-top: -11px;
 }
+
+.borderUp {
+  border-top: 1px solid black;
+}

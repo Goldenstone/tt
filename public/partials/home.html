@@ -1,17 +1,20 @@
-<ion-view title="Home">
+<ion-view title="TT">
+  <div class="bar bar-header bar-dark">
+    <h1 class="title">主页</h1>
+  </div>
   <ion-content padding="true" scroll="true" class="has-header">
-    <h4 class="pull-right">Welcome {{profileObj.name}}</h4>
+    <h4 class="pull-right">您好 {{profileObj.name}}</h4>
     <div class="clear"></div>
-    <h4>Online Users
+    <h4>在线用户列表
       <button class="button button-clear button-dark pull-right" ng-click="logout()">
-        Logout
+        注销
       </button>
     </h4>
     <hr/>
     <div class="list" ng-controller="HomeCtrl">
-      <span class="pull-left" ng-click="randomChat()">找人聊天</h4>
+      <button class="pull-left" ng-click="randomChat()">找人聊天</button>
       <label class="item item-input" ng-hide="users.length == 1">
-        <input type="text" placeholder="Search Users" ng-model="search.user">
+        <input type="text" placeholder="搜索用户" ng-model="search.user">
       </label>
       <span class="item item-button-right" ng-repeat="u in users | filter:search:user" >
         <i class="icon ion-ionic"></i>&nbsp;&nbsp;&nbsp; {{u.user}}
@@ -20,7 +23,7 @@
         </button>
       </span>
       <span class="item" ng-show="users.length == 1">
-        <i class="icon ion-alert"></i>&nbsp;&nbsp;&nbsp; No Other Users Online
+        <i class="icon ion-alert"></i>&nbsp;&nbsp;&nbsp; 没有其他用户在线
       </span>
       <div class="list">
   </ion-content>

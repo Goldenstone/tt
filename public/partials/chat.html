@@ -1,5 +1,8 @@
-<ion-view title="Chat">
+<ion-view title="TT">
   <ion-pane ng-controller="ChatCtrl">
+    <div class="bar bar-header bar-dark">
+      <h1 class="title">{{chatToUser}}</h1>
+    </div>
     <ion-content class="has-header padding">
       <ol class="messages">
         <li ng-repeat="message in messages" ng-class="" ng-bind-html="message.content"></li>
@@ -12,8 +15,8 @@
       <br/>
       <br/>
     </ion-content>
-    <ion-footer-bar class="bar-frosted">
-      <input type="text" placeholder="Enter Message" ng-model="chatMsg">
+    <ion-footer-bar class="bar-frosted borderUp">
+      <input type="text" placeholder="请输入信息" ng-model="chatMsg">
       <button class="button button-dark  icon-left ion-paper-airplane" ng-click="sendMessage(chatMsg); chatMsg = '';"></button>
     </ion-footer-bar>
   </ion-pane>

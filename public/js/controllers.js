@@ -6,7 +6,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   };
 
   $scope.loginUser = function() {
-    $rootScope.show('Please wait.. Authenticating');
+    $rootScope.show('正在为您验证...');
 
     var email = this.login.email;
     var password = this.login.password;
@@ -21,13 +21,13 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     }).catch(function(error) {
       $rootScope.hide();
       if (error.code == 'INVALID_EMAIL') {
-        $rootScope.notify('Invalid Email Address');
+        $rootScope.notify('邮箱地址错误');
       } else if (error.code == 'INVALID_PASSWORD') {
-        $rootScope.notify('Invalid Password');
+        $rootScope.notify('密码错误');
       } else if (error.code == 'INVALID_USER') {
-        $rootScope.notify('Invalid User');
+        $rootScope.notify('没有该用户');
       } else {
-        $rootScope.notify('Oops something went wrong. Please try again later');
+        $rootScope.notify('服务器发生错误，请稍后再试');
       }
     });
   }
@@ -46,7 +46,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     var password = this.signup.password;
     var username = this.signup.username;
 
-    $rootScope.show('Please wait... Registering');
+    $rootScope.show('正在为您验证...');
 
     $scope.auth.$createUser(email, password)
       .then(function(user) {
@@ -61,11 +61,11 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
       }, function(error) {
         $rootScope.hide();
         if (error.code == 'INVALID_EMAIL') {
-          $rootScope.notify('Invalid Email Address');
+          $rootScope.notify('邮箱地址错误');
         } else if (error.code == 'EMAIL_TAKEN') {
-          $rootScope.notify('Email Address already taken');
+          $rootScope.notify('邮箱地址已被使用');
         } else {
-          $rootScope.notify('Oops something went wrong. Please try again later');
+          $rootScope.notify('服务器发生错误，请稍后再试');
         }
       });
 
@@ -107,7 +107,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     var x = gui.Window.open('chat/' + user + '/' + $rootScope.userName, {
       width: 300,
       height: 450,
-      toolbar: true
+      toolbar: false
     });
 
     x.on('loaded', function() {
@@ -128,8 +128,8 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   // broadcast the user's presence
   $rootScope.offlineUser = function() {
       olUserSync.$remove($rootScope.presenceID);
-    }
-    // on window close broadcast the user's presence
+  }
+  // on window close broadcast the user's presence
   win.on('close', function() {
     $rootScope.offlineUser();
     this.close(true);
@@ -152,6 +152,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
 
 }]).controller('ChatCtrl', ['$rootScope', '$scope', '$stateParams', '$timeout', '$ionicScrollDelegate', '$firebase', function($rootScope, $scope, $stateParams, $timeout, $ionicScrollDelegate, $firebase) {
   $scope.chatToUser = $stateParams.chatToUser;
+  console.log($scope.chatToUser);
   $scope.loggedInUser = $stateParams.loggedInUser;
   var chatRef = new Firebase($rootScope.baseUrl + 'chats/chat_' + $rootScope.getHash($scope.chatToUser, $scope.loggedInUser));
   var sync = $firebase(chatRef);
