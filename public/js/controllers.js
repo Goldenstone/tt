@@ -1,8 +1,8 @@
-ttApp.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function($rootScope, $scope, $state) {
+ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', function($window, $rootScope, $scope, $state) {
 
   $scope.login = {
-    email: 'tt@tt.com',
-    password: 'tt'
+    email: '',
+    password: ''
   };
 
   $scope.loginUser = function() {
@@ -16,9 +16,9 @@ ttApp.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function($rootS
       password: password
     }).then(function(user) {
       $rootScope.hide();
-      $rootScope.userEmail = user.email;
+      $rootScope.userId = user.id;
       $state.go("home");
-    }, function(error) {
+    }).catch(function(error) {
       $rootScope.hide();
       if (error.code == 'INVALID_EMAIL') {
         $rootScope.notify('Invalid Email Address');
@@ -32,24 +32,31 @@ ttApp.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function($rootS
     });
   }
 
-
-}]).controller('SignupCtrl', ['$rootScope', '$scope', '$state', function($rootScope, $scope, $state) {
+}]).controller('SignupCtrl', ['$firebase', '$rootScope', '$scope', '$state', function($firebase, $rootScope, $scope, $state) {
 
   $scope.signup = {
-    email: 'tt@tt.com',
-    password: 'tt'
+    username: '',
+    email: '',
+    password: ''
   };
 
   $scope.signupUser = function() {
 
     var email = this.signup.email;
     var password = this.signup.password;
-    $rootScope.show('Please wait.. Registering');
+    var username = this.signup.username;
+
+    $rootScope.show('Please wait... Registering');
 
     $scope.auth.$createUser(email, password)
       .then(function(user) {
         $rootScope.hide();
-        $rootScope.userEmail = user.email;
+        var profileRef = new Firebase($rootScope.baseUrl).child('profiles').child(user.id);
+        $rootScope.profile = $firebase(profileRef);
+        $rootScope.profile.$set({
+          name: username
+        });
+        $rootScope.userId = user.id;
         $state.go("home");
       }, function(error) {
         $rootScope.hide();
@@ -64,7 +71,7 @@ ttApp.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function($rootS
 
   }
 
-}]).controller('HomeCtrl', ['$rootScope', '$scope', '$firebase', 'GUI', 'GUIWin', function($rootScope, $scope, $firebase, gui, win) {
+}]).controller('HomeCtrl', ['$rootScope', '$scope', '$firebase', 'GUI', 'GUIWin', 'Profile', function($rootScope, $scope, $firebase, gui, win, Profile) {
   $scope.users = [];
 
   var olUsersRef = new Firebase($rootScope.baseUrl + 'onlineUsers');
@@ -72,12 +79,16 @@ ttApp.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function($rootS
   $scope.users = olUserSync.$asArray();
 
   // broadcast the user's presence
-  olUserSync.$push({
-    user: $rootScope.userEmail,
-    login: Date.now()
-  }).then(function(data) {
-    $rootScope.presenceID = data.name();
-  })
+  $rootScope.profileObj = Profile($rootScope.userId);
+  $rootScope.profileObj.$loaded(function (user) {
+    olUserSync.$push({
+      user: user.name,
+      login: Date.now()
+    }).then(function (data) {
+      $rootScope.presenceID = data.key();
+      console.log($rootScope.presenceID);
+    });
+  });
 
   $scope.triggerChat = function(chatToUser) {
     $rootScope.chatToUser.push(chatToUser);
@@ -150,3 +161,4 @@ ttApp.controller('LoginCtrl', ['$rootScope', '$scope', '$state', function($rootS
     $ionicScrollDelegate.scrollBottom(true);
   }
 }])
+

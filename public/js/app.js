@@ -1,6 +1,6 @@
 ttApp = angular.module('tt', ['ionic', 'firebase'])
 
-.run(function($rootScope, $firebaseSimpleLogin, $window, $ionicLoading) {
+.run(function($rootScope, $firebaseSimpleLogin, $window, $ionicLoading, Profile, $state) {
 
   $rootScope.baseUrl = 'https://talktalk.firebaseio.com/';
   var authRef = new Firebase($rootScope.baseUrl);
@@ -39,15 +39,16 @@ ttApp = angular.module('tt', ['ionic', 'firebase'])
     var auth = new FirebaseSimpleLogin(authRef, function(error, user) {
       if (error) {
         // no action yet.. redirect to default route
-        $rootScope.userEmail = null;
+        $rootScope.userId = null;
         $window.location.href = '#/';
       } else if (user) {
         // user authenticated with Firebase
-        $rootScope.userEmail = user.email;
+        $rootScope.userId = user.id;
         $window.location.href = ('#/home');
       } else {
         // user is logged out
-        $rootScope.userEmail = null;
+        console.log('logged out');
+        $rootScope.userId = null;
         $window.location.href = '#/';
       }
     });
