@@ -58,21 +58,21 @@ ttApp = angular.module('tt', ['ionic', 'firebase'])
 
   // globals
   $rootScope.chatToUser = [];
-  $rootScope.userEmail = '';
-  $rootScope.escapeEmailAddress = function(email) {
-    if (!email) return false
+  $rootScope.userName = '';
+  $rootScope.escapeUserName = function(name) {
+    if (!name) return false
       // Replace '.' (not allowed in a Firebase key) with ','
-    email = email.toLowerCase();
-    email = email.replace(/\./g, ',');
-    return email.trim();
+    name = name.toLowerCase();
+    name = name.replace(/\./g, ',');
+    return name.trim();
   }
 
   $rootScope.getHash = function(chatToUser, loggedInUser) {
     var hash = '';
     if (chatToUser > loggedInUser) {
-      hash = this.escapeEmailAddress(chatToUser) + '_' + this.escapeEmailAddress(loggedInUser);
+      hash = this.escapeUserName(chatToUser) + '_' + this.escapeUserName(loggedInUser);
     } else {
-      hash = this.escapeEmailAddress(loggedInUser) + '_' + this.escapeEmailAddress(chatToUser);
+      hash = this.escapeUserName(loggedInUser) + '_' + this.escapeUserName(chatToUser);
     }
     return hash;
   }

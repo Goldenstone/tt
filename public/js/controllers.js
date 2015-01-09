@@ -81,6 +81,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   // broadcast the user's presence
   $rootScope.profileObj = Profile($rootScope.userId);
   $rootScope.profileObj.$loaded(function (user) {
+    $rootScope.userName = user.name;
     olUserSync.$push({
       user: user.name,
       login: Date.now()
@@ -96,19 +97,19 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   }
 
   function spawnner(user) { // other user
-    var x = gui.Window.open('chat/' + user + '/' + $rootScope.userEmail, {
+    var x = gui.Window.open('chat/' + user + '/' + $rootScope.userName, {
       width: 300,
       height: 450,
-      toolbar: false
+      toolbar: true
     });
 
     x.on('loaded', function() {
-      $rootScope.openchats.push("win_" + $rootScope.escapeEmailAddress(user));
+      $rootScope.openchats.push("win_" + $rootScope.escapeUserName(user));
     });
 
     x.on('close', function() {
       for (var i = $rootScope.openchats.length - 1; i >= 0; i--) {
-        if ($rootScope.openchats[i] === "win_" + $rootScope.escapeEmailAddress(user)) {
+        if ($rootScope.openchats[i] === "win_" + $rootScope.escapeUserName(user)) {
           $rootScope.openchats.splice(i, 1);
           return;
         }
@@ -132,9 +133,9 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   obj = $firebase(triggerChatRef).$asArray();
   var unwatch = obj.$watch(function(snap) {
     if (snap.event == 'child_added' || snap.event == 'child_changed') {
-      if (snap.key.indexOf($rootScope.escapeEmailAddress($rootScope.userEmail)) >= 0) {
+      if (snap.key.indexOf($rootScope.escapeUserName($rootScope.userName)) >= 0) {
         // check and spawn
-        var otherUser = snap.key.replace(/_/g, '').replace('chat', '').replace($rootScope.escapeEmailAddress($rootScope.userEmail), '');
+        var otherUser = snap.key.replace(/_/g, '').replace('chat', '').replace($rootScope.escapeUserName($rootScope.userName), '');
         if ($rootScope.openchats.join('').indexOf($rootScope.escapeEmailAddress(otherUser)) < 0) {
           spawnner(otherUser);
         }

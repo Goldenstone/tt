@@ -12,14 +12,14 @@
       <label class="item item-input" ng-hide="users.length == 1">
         <input type="text" placeholder="Search Users" ng-model="search.user">
       </label>
-      <span class="item item-button-right" ng-repeat="u in users | filter:search:user" ng-if="u.user != userEmail">
+      <span class="item item-button-right" ng-repeat="u in users | filter:search:user" ng-if="u.user != userName">
         <i class="icon ion-ionic"></i>&nbsp;&nbsp;&nbsp; {{u.user}}
         <button class="button button-dark" ng-click="triggerChat(u)">
           <i class="icon ion-chatbubbles"></i>
         </button>
       </span>
       <span class="item" ng-show="users.length == 1">
-        <i class="icon ion-alert"></i>&nbsp;&nbsp;&nbsp; No Users Online
+        <i class="icon ion-alert"></i>&nbsp;&nbsp;&nbsp; No Other Users Online
       </span>
       <div class="list">
   </ion-content>
