@@ -17,8 +17,8 @@
         <input type="text" placeholder="搜索用户" ng-model="search.user">
       </label>
       <label class="item" ng-hide="users.length == 1">
-        <input type="radio" ng-model="search.gender" value="male" />  男
-        <input type="radio" ng-model="search.gender" value="female" />  女
+        <input type="radio" ng-model="search.gender" value="boy" />  男
+        <input type="radio" ng-model="search.gender" value="girl" />  女
       </label>
       <span class="item item-button-right" ng-repeat="u in users | filter:search:user | filter:search:gender" >
         <i class="icon ion-ionic"></i>&nbsp;&nbsp;&nbsp; {{u.user}}

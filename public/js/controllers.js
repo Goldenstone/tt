@@ -81,6 +81,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   var olUsersRef = new Firebase($rootScope.baseUrl + 'onlineUsers');
   var olUserSync = $firebase(olUsersRef);
   $scope.users = olUserSync.$asArray();
+  console.log($scope.users);
 
   // broadcast the user's presence
   $rootScope.profileObj = Profile($rootScope.userEmail);
