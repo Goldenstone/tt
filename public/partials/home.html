@@ -20,7 +20,7 @@
         <input type="radio" ng-model="search.gender" value="male" />  男
         <input type="radio" ng-model="search.gender" value="female" />  女
       </label>
-      <span class="item item-button-right" ng-repeat="u in users | filter:search:user | filter:search:gender" >
+      <span class="item item-button-right" ng-repeat="u in users | filter:search:gender | filter:search:user" ng-if="u.email != userEmail" >
         <i class="icon ion-ionic"></i>&nbsp;&nbsp;&nbsp; {{u.user}}
         <button class="button button-dark" ng-click="triggerChat(u)">
           <i class="icon ion-chatbubbles"></i>

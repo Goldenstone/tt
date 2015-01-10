@@ -37,7 +37,8 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   $scope.signup = {
     username: '',
     email: '',
-    password: ''
+    password: '',
+    gender: ''
   };
 
   $scope.signupUser = function() {
@@ -56,8 +57,8 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
         $rootScope.profile = $firebase(profileRef);
         $rootScope.profile.$set({
           name: username,
-          email: email,
-          gender: gender
+          gender: gender,
+          email: email
         });
         $rootScope.userEmail = user.email;
         $state.go("home");
@@ -87,8 +88,8 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     $rootScope.userName = user.name;
     olUserSync.$push({
       user: user.name,
-      email: user.email,
       gender: user.gender,
+      email: user.email,
       login: Date.now()
     }).then(function (data) {
       $rootScope.presenceID = data.key();
