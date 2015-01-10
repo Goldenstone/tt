@@ -110,7 +110,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   }
 
   function spawnner(user) { // other user
-    $scope.x = gui.Window.open('chat/' + user + '/' + $rootScope.userEmail, {
+    x = gui.Window.open('chat/' + user + '/' + $rootScope.userEmail, {
       width: 300,
       height: 450,
       toolbar: true
@@ -139,9 +139,6 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   win.on('close', function() {
     $rootScope.offlineUser();
     this.close(true);
-    if ($scope.x) {
-      $scope.x.close(true);
-    }
   });
 
   // register for other's user to chat
