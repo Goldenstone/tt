@@ -16,7 +16,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
       password: password
     }).then(function(user) {
       $rootScope.hide();
-      $rootScope.userId = user.id;
+      $rootScope.userEmail = user.email;
       $state.go("home");
     }).catch(function(error) {
       $rootScope.hide();
@@ -52,13 +52,14 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     $scope.auth.$createUser(email, password)
       .then(function(user) {
         $rootScope.hide();
-        var profileRef = new Firebase($rootScope.baseUrl).child('profiles').child(user.id);
+        var profileRef = new Firebase($rootScope.baseUrl).child('profiles').child($rootScope.escapeUserEmail(user.email));
         $rootScope.profile = $firebase(profileRef);
         $rootScope.profile.$set({
           name: username,
+          email: email,
           gender: gender
         });
-        $rootScope.userId = user.id;
+        $rootScope.userEmail = user.email;
         $state.go("home");
       }, function(error) {
         $rootScope.hide();
@@ -81,11 +82,12 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   $scope.users = olUserSync.$asArray();
 
   // broadcast the user's presence
-  $rootScope.profileObj = Profile($rootScope.userId);
+  $rootScope.profileObj = Profile($rootScope.userEmail);
   $rootScope.profileObj.$loaded(function (user) {
     $rootScope.userName = user.name;
     olUserSync.$push({
       user: user.name,
+      email: user.email,
       gender: user.gender,
       login: Date.now()
     }).then(function (data) {
@@ -96,30 +98,30 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
 
   $scope.triggerChat = function(chatToUser) {
     $rootScope.chatToUser.push(chatToUser);
-    spawnner(chatToUser.user);
+    spawnner(chatToUser.email);
   }
 
   $scope.randomChat = function () {
     var random = Math.floor(Math.random() * $scope.users.length);
     var chatToUser = $scope.users[random];
     $rootScope.chatToUser.push(chatToUser);
-    spawnner(chatToUser.user);
+    spawnner(chatToUser.email);
   }
 
   function spawnner(user) { // other user
-    var x = gui.Window.open('chat/' + user + '/' + $rootScope.userName, {
+    var x = gui.Window.open('chat/' + user + '/' + $rootScope.userEmail, {
       width: 300,
       height: 450,
-      toolbar: false
+      toolbar: true
     });
 
     x.on('loaded', function() {
-      $rootScope.openchats.push("win_" + $rootScope.escapeUserName(user));
+      $rootScope.openchats.push("win_" + $rootScope.escapeUserEmail(user));
     });
 
     x.on('close', function() {
       for (var i = $rootScope.openchats.length - 1; i >= 0; i--) {
-        if ($rootScope.openchats[i] === "win_" + $rootScope.escapeUserName(user)) {
+        if ($rootScope.openchats[i] === "win_" + $rootScope.escapeUserEmail(user)) {
           $rootScope.openchats.splice(i, 1);
           return;
         }
@@ -143,34 +145,44 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
   obj = $firebase(triggerChatRef).$asArray();
   var unwatch = obj.$watch(function(snap) {
     if (snap.event == 'child_added' || snap.event == 'child_changed') {
-      if (snap.key.indexOf($rootScope.escapeUserName($rootScope.userName)) >= 0) {
+      if (snap.key.indexOf($rootScope.escapeUserEmail($rootScope.userEmail)) >= 0) {
         // check and spawn
-        var otherUser = snap.key.replace(/_/g, '').replace('chat', '').replace($rootScope.escapeUserName($rootScope.userName), '');
-        if ($rootScope.openchats.join('').indexOf($rootScope.escapeUserName(otherUser)) < 0) {
+        var otherUser = snap.key.replace(/_/g, '').replace('chat', '').replace($rootScope.escapeUserEmail($rootScope.userEmail), '');
+        console.log(otherUser);
+        if ($rootScope.openchats.join('').indexOf($rootScope.escapeUserEmail(otherUser)) < 0) {
           spawnner(otherUser);
         }
       }
     }
   });
 
-}]).controller('ChatCtrl', ['$rootScope', '$scope', '$stateParams', '$timeout', '$ionicScrollDelegate', '$firebase', function($rootScope, $scope, $stateParams, $timeout, $ionicScrollDelegate, $firebase) {
+}]).controller('ChatCtrl', ['$rootScope', '$scope', '$stateParams', '$timeout', '$ionicScrollDelegate', '$firebase', 'Profile', function($rootScope, $scope, $stateParams, $timeout, $ionicScrollDelegate, $firebase, Profile) {
   $scope.chatToUser = $stateParams.chatToUser;
-  console.log($scope.chatToUser);
+  Profile($scope.chatToUser).$loaded(function (data) {
+    $scope.chatToUserName = data.name;
+  });
   $scope.loggedInUser = $stateParams.loggedInUser;
+  Profile($scope.loggedInUser).$loaded(function (data) {
+    $scope.loggedInUserName = data.name;
+  });
   var chatRef = new Firebase($rootScope.baseUrl + 'chats/chat_' + $rootScope.getHash($scope.chatToUser, $scope.loggedInUser));
   var sync = $firebase(chatRef);
   $scope.messages = sync.$asArray();
 
   $scope.sendMessage = function(chatMsg) {
-    var d = new Date();
-    d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
-    sync.$push({
-      content: '<p>' + $scope.loggedInUser + ' ' + d + '<br/>' + chatMsg + '</p> <hr/>',
-      time: d
-    });
+    if (chatMsg !== '') {
+      var d = new Date();
+      d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+      sync.$push({
+        content: '<p>' + $scope.loggedInUserName + ' ' + d + '<br/>' + chatMsg + '</p> <hr/>',
+        time: d
+      });
 
-    $scope.chatMsg = chatMsg = '';
-    $ionicScrollDelegate.scrollBottom(true);
+      $scope.chatMsg = chatMsg = '';
+      $ionicScrollDelegate.scrollBottom(true);
+    } else {
+      $rootScope.notify('信息不能为空');
+    }
   }
 }])
 

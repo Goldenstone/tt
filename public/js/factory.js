@@ -5,8 +5,8 @@ ttApp.factory('GUI', function() {
     return gui.Window.get();
   }
 ]).factory("Profile", ["$rootScope", "$firebase", function ($rootScope, $firebase) {
-  return function (id) {
-    var ref = new Firebase($rootScope.baseUrl).child('profiles').child(id);
+  return function (email) {
+    var ref = new Firebase($rootScope.baseUrl).child('profiles').child($rootScope.escapeUserEmail(email));
     return $firebase(ref).$asObject();
   }
 }]);

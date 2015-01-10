@@ -1,6 +1,6 @@
 ttApp = angular.module('tt', ['ionic', 'firebase'])
 
-.run(function($rootScope, $firebaseSimpleLogin, $window, $ionicLoading, Profile, $state) {
+.run(function($rootScope, $firebaseSimpleLogin, $window, $ionicLoading, $state) {
 
   $rootScope.baseUrl = 'https://talktalk.firebaseio.com/';
   var authRef = new Firebase($rootScope.baseUrl);
@@ -39,16 +39,16 @@ ttApp = angular.module('tt', ['ionic', 'firebase'])
     var auth = new FirebaseSimpleLogin(authRef, function(error, user) {
       if (error) {
         // no action yet.. redirect to default route
-        $rootScope.userId = null;
+        $rootScope.userEmail = null;
         $window.location.href = '#/';
       } else if (user) {
         // user authenticated with Firebase
-        $rootScope.userId = user.id;
+        $rootScope.userEmail = user.email;
         $window.location.href = ('#/home');
       } else {
         // user is logged out
         console.log('logged out');
-        $rootScope.userId = null;
+        $rootScope.userEmail = null;
         $window.location.href = '#/';
       }
     });
@@ -57,20 +57,20 @@ ttApp = angular.module('tt', ['ionic', 'firebase'])
   // globals
   $rootScope.chatToUser = [];
   $rootScope.userName = '';
-  $rootScope.escapeUserName = function(name) {
-    if (!name) return false
+  $rootScope.escapeUserEmail = function(email) {
+    if (!email) return false
       // Replace '.' (not allowed in a Firebase key) with ','
-    name = name.toLowerCase();
-    name = name.replace(/\./g, ',');
-    return name.trim();
+    email = email.toLowerCase();
+    email = email.replace(/\./g, ',');
+    return email.trim();
   }
 
   $rootScope.getHash = function(chatToUser, loggedInUser) {
     var hash = '';
     if (chatToUser > loggedInUser) {
-      hash = this.escapeUserName(chatToUser) + '_' + this.escapeUserName(loggedInUser);
+      hash = this.escapeUserEmail(chatToUser) + '_' + this.escapeUserEmail(loggedInUser);
     } else {
-      hash = this.escapeUserName(loggedInUser) + '_' + this.escapeUserName(chatToUser);
+      hash = this.escapeUserEmail(loggedInUser) + '_' + this.escapeUserEmail(chatToUser);
     }
     return hash;
   }
