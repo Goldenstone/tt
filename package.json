@@ -17,7 +17,7 @@
   },
   "window": {
     "title": "TT",
-    "toolbar": true,
+    "toolbar": false,
     "frame": true,
     "position": "center",
     "fullscreen": false,

@@ -114,7 +114,7 @@ ttApp.controller('LoginCtrl', ['$window', '$rootScope', '$scope', '$state', func
     x = gui.Window.open('chat/' + user + '/' + $rootScope.userEmail, {
       width: 300,
       height: 450,
-      toolbar: true
+      toolbar: false
     });
 
     x.on('loaded', function() {
